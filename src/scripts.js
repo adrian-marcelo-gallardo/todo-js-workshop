@@ -8,6 +8,10 @@ let tasks = [
 function addTask() {
   const taskInput = document.getElementById('taskInput')
 
+  if (!taskInput.value || taskInput.value.trim() === '') {
+    return
+  }
+
   tasks.push({
     name: taskInput.value,
     isComplete: false
@@ -24,6 +28,13 @@ function addTaskOnEnter(event) {
 }
 
 function removeTask(taskName) {
+  const task = tasks.find(task => task.name === taskName)
+
+  if (!task.isComplete) {
+    if (!confirm('La tarea aún no está completa, ¿Estás seguro?')) {
+      return
+    }
+  }
   tasks = tasks.filter(task => {
     if (task.name === taskName) {
       return false
@@ -40,6 +51,10 @@ function toggleComplete(taskName) {
   task.isComplete = !task.isComplete
 
   renderTasks()
+}
+
+function allTasksCompleted() {
+  return tasks.every(task => task.isComplete)
 }
 
 function renderTask(task) {
@@ -74,11 +89,71 @@ function renderTasks() {
 
     taskListContainer.innerHTML += taskHtml
   })
+
+  toggleSuccessMsg(allTasksCompleted())
+  updateCompletedCounter()
+}
+
+function toggleSuccessMsg(display) {
+  const successMsg = document.getElementById('successMsg')
+
+  if (display) {
+    successMsg.classList.remove('hidden')
+  } else {
+    successMsg.classList.add('hidden')
+  }
+}
+
+function updateCompletedCounter() {
+  const numCompletedTxt = document.getElementById('numCompleted')
+  const numTotalTxt = document.getElementById('numTotal')
+
+  const numCompleted = tasks.filter(task => task.isComplete).length
+  const numTotal = tasks.length
+
+  numTotalTxt.innerText = numTotal
+  numCompletedTxt.innerText = numCompleted
+
+  updateCounterStatus(numCompleted, numTotal)
+}
+
+function updateCounterStatus(numCompleted, numTotal) {
+  const counter = document.getElementById('counter')
+  const numPending = numTotal - numCompleted
+
+  counter.classList.remove('badge-success', 'badge-danger', 'badge-warning')
+  switch(numPending) {
+    case 0:
+      counter.classList.add('badge-success')
+      break;
+    case numTotal:
+      counter.classList.add('badge-danger')
+      break;
+    default:
+      counter.classList.add('badge-warning')
+  }
+}
+
+function storeTasks() {
+  window.localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
+function restoreTasks() {
+  const _tasks = window.localStorage.getItem('tasks')
+
+  if (_tasks) {
+    tasks = JSON.parse(_tasks)
+  }
 }
 
 window.addEventListener('load', () => {
+  restoreTasks()
   renderTasks()
 })
+
+window.addEventListener("beforeunload", () => {
+  storeTasks()
+});
 
 
 /*
@@ -90,5 +165,4 @@ Challenge extras:
 - Boton remover todas / completar todas
 - Guardar tareas en localStorage
 - Recuperar tareas del localStorage
-- Actualizar solo lo que se modifica del DOM
 */
