@@ -1,0 +1,47 @@
+- Declaracion de variables: let y const
+
+- Tipos de datos primitivos
+Number
+String
+Boolean
+Undefined
+Null
+
+Numeros
+- Operaciones
+- Comparacion
+
+Booleanos
+- Comparacion
+- negacion
+- Conversion automatica en JS
+
+Strings
+- Declaración: comillas simples, dobles y string templates
+- Concatenación
+- Interpolación de valores
+
+- Arreglos
+Acceso a valores: corchetes
+Operaciones comunes: push, pop, forEach, filter
+
+- Objetos
+Acceso a valores: notacion de puntos y corchetes
+
+- Funciones: declaracion, llamada, parametros y argumentos
+- Arrow functions
+
+- Condicionales: if, if-else, if-else-if, switch
+
+- Bucles: for, while
+
+- Operadores: matematicos, igualdad, negacion, comparacion
+
+DOM
+- Seleccionar elementos
+- Insertar HTML
+- Leer valor
+- Event listeners
+
+
+- Closures y scopes
